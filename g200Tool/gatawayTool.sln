@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
 VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "g200Tool", "g200Tool\g200Tool.csproj", "{02A43AE6-3096-4E1D-9265-F7F7803B807A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "gatawayTool", "g200Tool\gatawayTool.csproj", "{02A43AE6-3096-4E1D-9265-F7F7803B807A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
