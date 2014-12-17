@@ -44,7 +44,7 @@
             // 
             // buttonSelectDbFile
             // 
-            this.buttonSelectDbFile.Location = new System.Drawing.Point(709, 10);
+            this.buttonSelectDbFile.Location = new System.Drawing.Point(960, 10);
             this.buttonSelectDbFile.Name = "buttonSelectDbFile";
             this.buttonSelectDbFile.Size = new System.Drawing.Size(75, 23);
             this.buttonSelectDbFile.TabIndex = 0;
@@ -54,7 +54,7 @@
             // 
             // buttonSelectExcelFile
             // 
-            this.buttonSelectExcelFile.Location = new System.Drawing.Point(709, 37);
+            this.buttonSelectExcelFile.Location = new System.Drawing.Point(960, 37);
             this.buttonSelectExcelFile.Name = "buttonSelectExcelFile";
             this.buttonSelectExcelFile.Size = new System.Drawing.Size(75, 23);
             this.buttonSelectExcelFile.TabIndex = 1;
@@ -64,7 +64,7 @@
             // 
             // buttonImportData
             // 
-            this.buttonImportData.Location = new System.Drawing.Point(709, 66);
+            this.buttonImportData.Location = new System.Drawing.Point(960, 66);
             this.buttonImportData.Name = "buttonImportData";
             this.buttonImportData.Size = new System.Drawing.Size(75, 23);
             this.buttonImportData.TabIndex = 2;
@@ -74,7 +74,7 @@
             // 
             // buttonUpdateAndSaveFile
             // 
-            this.buttonUpdateAndSaveFile.Location = new System.Drawing.Point(709, 95);
+            this.buttonUpdateAndSaveFile.Location = new System.Drawing.Point(960, 95);
             this.buttonUpdateAndSaveFile.Name = "buttonUpdateAndSaveFile";
             this.buttonUpdateAndSaveFile.Size = new System.Drawing.Size(75, 23);
             this.buttonUpdateAndSaveFile.TabIndex = 3;
@@ -84,20 +84,24 @@
             // 
             // dataGridViewDb
             // 
+            this.dataGridViewDb.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.DisplayedCells;
             this.dataGridViewDb.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridViewDb.Location = new System.Drawing.Point(12, 66);
             this.dataGridViewDb.Name = "dataGridViewDb";
+            this.dataGridViewDb.ReadOnly = true;
             this.dataGridViewDb.RowTemplate.Height = 23;
-            this.dataGridViewDb.Size = new System.Drawing.Size(346, 394);
+            this.dataGridViewDb.Size = new System.Drawing.Size(466, 394);
             this.dataGridViewDb.TabIndex = 4;
             // 
             // dataGridViewExcel
             // 
+            this.dataGridViewExcel.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.DisplayedCells;
             this.dataGridViewExcel.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridViewExcel.Location = new System.Drawing.Point(364, 66);
+            this.dataGridViewExcel.Location = new System.Drawing.Point(484, 66);
             this.dataGridViewExcel.Name = "dataGridViewExcel";
+            this.dataGridViewExcel.ReadOnly = true;
             this.dataGridViewExcel.RowTemplate.Height = 23;
-            this.dataGridViewExcel.Size = new System.Drawing.Size(339, 394);
+            this.dataGridViewExcel.Size = new System.Drawing.Size(470, 394);
             this.dataGridViewExcel.TabIndex = 5;
             // 
             // textBoxDbUrl
@@ -105,7 +109,7 @@
             this.textBoxDbUrl.Location = new System.Drawing.Point(12, 12);
             this.textBoxDbUrl.Name = "textBoxDbUrl";
             this.textBoxDbUrl.ReadOnly = true;
-            this.textBoxDbUrl.Size = new System.Drawing.Size(691, 21);
+            this.textBoxDbUrl.Size = new System.Drawing.Size(942, 21);
             this.textBoxDbUrl.TabIndex = 6;
             // 
             // textBoxExcelUrl
@@ -113,7 +117,7 @@
             this.textBoxExcelUrl.Location = new System.Drawing.Point(12, 39);
             this.textBoxExcelUrl.Name = "textBoxExcelUrl";
             this.textBoxExcelUrl.ReadOnly = true;
-            this.textBoxExcelUrl.Size = new System.Drawing.Size(691, 21);
+            this.textBoxExcelUrl.Size = new System.Drawing.Size(942, 21);
             this.textBoxExcelUrl.TabIndex = 7;
             // 
             // dataSet1
@@ -124,7 +128,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(805, 472);
+            this.ClientSize = new System.Drawing.Size(1047, 472);
             this.Controls.Add(this.textBoxExcelUrl);
             this.Controls.Add(this.textBoxDbUrl);
             this.Controls.Add(this.dataGridViewExcel);
