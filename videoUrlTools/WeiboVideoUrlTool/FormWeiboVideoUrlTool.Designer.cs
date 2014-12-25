@@ -30,6 +30,7 @@
         {
             this.buttonGetUrl = new System.Windows.Forms.Button();
             this.textBoxWeiboUrl = new System.Windows.Forms.TextBox();
+            this.richTextBoxConsole = new System.Windows.Forms.RichTextBox();
             this.SuspendLayout();
             // 
             // buttonGetUrl
@@ -49,11 +50,20 @@
             this.textBoxWeiboUrl.Size = new System.Drawing.Size(522, 21);
             this.textBoxWeiboUrl.TabIndex = 1;
             // 
+            // richTextBoxConsole
+            // 
+            this.richTextBoxConsole.Location = new System.Drawing.Point(13, 41);
+            this.richTextBoxConsole.Name = "richTextBoxConsole";
+            this.richTextBoxConsole.Size = new System.Drawing.Size(522, 209);
+            this.richTextBoxConsole.TabIndex = 2;
+            this.richTextBoxConsole.Text = "";
+            // 
             // WeiboVideoUrlTool
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(628, 262);
+            this.Controls.Add(this.richTextBoxConsole);
             this.Controls.Add(this.textBoxWeiboUrl);
             this.Controls.Add(this.buttonGetUrl);
             this.Name = "WeiboVideoUrlTool";
@@ -67,6 +77,7 @@
 
         private System.Windows.Forms.Button buttonGetUrl;
         private System.Windows.Forms.TextBox textBoxWeiboUrl;
+        private System.Windows.Forms.RichTextBox richTextBoxConsole;
     }
 }
 
