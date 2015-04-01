@@ -62,24 +62,30 @@ namespace g200Tool
         {
             if (!datasource.Equals(""))
             {
+                //建立SQLite连接
                 System.Data.SQLite.SQLiteConnection conn = new System.Data.SQLite.SQLiteConnection();
                 System.Data.SQLite.SQLiteConnectionStringBuilder connstr = new System.Data.SQLite.SQLiteConnectionStringBuilder();
                 connstr.DataSource = datasource;
                 //connstr.Password = "kdc";
                 conn.ConnectionString = connstr.ToString();
                 conn.Open();
+                //执行查询语句
                 string sql = "select id,puid from camdevices";
                 System.Data.SQLite.SQLiteCommand cmd = new System.Data.SQLite.SQLiteCommand();
                 cmd.CommandText = sql;
                 System.Data.SQLite.SQLiteDataAdapter dataAdapter = new System.Data.SQLite.SQLiteDataAdapter(sql, conn);
+                //填充架构及数据
                 dataAdapter.FillSchema(dataSet1, SchemaType.Source, "camdevices");
                 dataAdapter.Fill(dataSet1, "camdevices");
+                //清空dataGridView数据源
                 if (dataGridViewDb.DataSource != null && dataGridViewDb.DataSource != "")
                 {
                     dataGridViewDb.DataSource = "";
                     dataGridViewDb.Refresh();
                 }
+                //填充dataGridView
                 dataGridViewDb.DataSource = dataSet1.Tables[0];
+                //刷新映射表
                 if (puidmap.ToString() != null && puidmap.ToString() != "")
                 {
                     puidmap.Clear();
