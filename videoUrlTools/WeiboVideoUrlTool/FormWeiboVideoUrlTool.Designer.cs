@@ -35,7 +35,7 @@
             // 
             // buttonGetUrl
             // 
-            this.buttonGetUrl.Location = new System.Drawing.Point(541, 11);
+            this.buttonGetUrl.Location = new System.Drawing.Point(1058, 11);
             this.buttonGetUrl.Name = "buttonGetUrl";
             this.buttonGetUrl.Size = new System.Drawing.Size(75, 23);
             this.buttonGetUrl.TabIndex = 0;
@@ -47,14 +47,14 @@
             // 
             this.textBoxWeiboUrl.Location = new System.Drawing.Point(13, 13);
             this.textBoxWeiboUrl.Name = "textBoxWeiboUrl";
-            this.textBoxWeiboUrl.Size = new System.Drawing.Size(522, 21);
+            this.textBoxWeiboUrl.Size = new System.Drawing.Size(1012, 21);
             this.textBoxWeiboUrl.TabIndex = 1;
             // 
             // richTextBoxConsole
             // 
             this.richTextBoxConsole.Location = new System.Drawing.Point(13, 41);
             this.richTextBoxConsole.Name = "richTextBoxConsole";
-            this.richTextBoxConsole.Size = new System.Drawing.Size(522, 209);
+            this.richTextBoxConsole.Size = new System.Drawing.Size(1012, 478);
             this.richTextBoxConsole.TabIndex = 2;
             this.richTextBoxConsole.Text = "";
             // 
@@ -62,7 +62,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(628, 262);
+            this.ClientSize = new System.Drawing.Size(1145, 531);
             this.Controls.Add(this.richTextBoxConsole);
             this.Controls.Add(this.textBoxWeiboUrl);
             this.Controls.Add(this.buttonGetUrl);
