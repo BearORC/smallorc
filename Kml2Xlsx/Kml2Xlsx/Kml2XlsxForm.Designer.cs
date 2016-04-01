@@ -30,8 +30,10 @@
         {
             this.buttonBrowse = new System.Windows.Forms.Button();
             this.textBoxKmlFileUrl = new System.Windows.Forms.TextBox();
-            this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.buttonExport = new System.Windows.Forms.Button();
+            this.dataSetFileData = new System.Data.DataSet();
+            this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            ((System.ComponentModel.ISupportInitialize)(this.dataSetFileData)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -52,15 +54,6 @@
             this.textBoxKmlFileUrl.Size = new System.Drawing.Size(537, 21);
             this.textBoxKmlFileUrl.TabIndex = 1;
             // 
-            // dataGridView1
-            // 
-            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Location = new System.Drawing.Point(13, 40);
-            this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.RowTemplate.Height = 23;
-            this.dataGridView1.Size = new System.Drawing.Size(536, 420);
-            this.dataGridView1.TabIndex = 2;
-            // 
             // buttonExport
             // 
             this.buttonExport.Location = new System.Drawing.Point(555, 40);
@@ -70,17 +63,31 @@
             this.buttonExport.Text = "导出";
             this.buttonExport.UseVisualStyleBackColor = true;
             // 
+            // dataSetFileData
+            // 
+            this.dataSetFileData.DataSetName = "NewDataSet";
+            // 
+            // dataGridView1
+            // 
+            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView1.Location = new System.Drawing.Point(13, 40);
+            this.dataGridView1.Name = "dataGridView1";
+            this.dataGridView1.RowTemplate.Height = 23;
+            this.dataGridView1.Size = new System.Drawing.Size(536, 420);
+            this.dataGridView1.TabIndex = 4;
+            // 
             // Kml2XlsxForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(642, 472);
-            this.Controls.Add(this.buttonExport);
             this.Controls.Add(this.dataGridView1);
+            this.Controls.Add(this.buttonExport);
             this.Controls.Add(this.textBoxKmlFileUrl);
             this.Controls.Add(this.buttonBrowse);
             this.Name = "Kml2XlsxForm";
             this.Text = "Kml2XlsxForm";
+            ((System.ComponentModel.ISupportInitialize)(this.dataSetFileData)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -91,8 +98,9 @@
 
         private System.Windows.Forms.Button buttonBrowse;
         private System.Windows.Forms.TextBox textBoxKmlFileUrl;
-        private System.Windows.Forms.DataGridView dataGridView1;
         private System.Windows.Forms.Button buttonExport;
+        private System.Data.DataSet dataSetFileData;
+        private System.Windows.Forms.DataGridView dataGridView1;
     }
 }
 
