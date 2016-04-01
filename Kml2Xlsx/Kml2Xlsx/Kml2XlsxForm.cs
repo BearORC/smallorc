@@ -15,7 +15,6 @@ namespace Kml2Xlsx
         {
             InitializeComponent();
         }
-        string datasource = "";
 
         private void buttonBrowse_Click(object sender, EventArgs e)
         {
@@ -26,7 +25,8 @@ namespace Kml2Xlsx
             dialog.RestoreDirectory = true;
             // 弹出对话框
             dialog.ShowDialog();
-            
+
+            string datasource = "";
             // 文件名判断
             if (!string.IsNullOrEmpty(dialog.FileName))
             {
@@ -40,7 +40,7 @@ namespace Kml2Xlsx
             // 重置dataSet数据
             dataSetFileData.Reset();
             // 将Xml数据读入dataSet
-            ReadXml(datasource,dataSetFileData);
+            ReadXml(datasource, dataSetFileData);
 
             // 初始化需要新增的列
             DataColumn newNameColumn = new DataColumn("name", dataSetFileData.Tables["Placemark"].Columns["name"].DataType);
@@ -65,7 +65,7 @@ namespace Kml2Xlsx
             DoInsert(dataSetFileData.Tables["Point"]);
 
         }
-        private static void ReadXml(String xmlFilePath,DataSet ds)
+        private static void ReadXml(String xmlFilePath, DataSet ds)
         {
             // 使用UTF8编码从字节流中读取数据
             StreamReader sr = new StreamReader(xmlFilePath, Encoding.UTF8);
@@ -88,7 +88,7 @@ namespace Kml2Xlsx
             {
                 for (int i = 0; i < dt.Rows.Count; i++)
                 {
-                    SQLStringList.Add("insert into TEMP_QX_JWD (C_JWD, C_NAME, C_DESC) VALUES ('"+ dt.Rows[i]["coordinates"] + "','"+ dt.Rows[i]["name"] + "','"+ dt.Rows[i]["description"] + "')");
+                    SQLStringList.Add("insert into TEMP_QX_JWD (C_JWD, C_NAME, C_DESC) VALUES ('" + dt.Rows[i]["coordinates"] + "','" + dt.Rows[i]["name"] + "','" + dt.Rows[i]["description"] + "')");
                 }
 
             }
@@ -97,17 +97,14 @@ namespace Kml2Xlsx
             ExecuteSqlTran(SQLStringList);
         }
 
-
-        /// <summary>
-        /// 执行多条SQL语句，实现数据库事务。
-        /// </summary>
-        /// <param name="SQLStringList">多条SQL语句</param>		
+        // 执行多条SQL语句，实现数据库事务。	
         public static void ExecuteSqlTran(ArrayList SQLStringList)
         {
+            // 数据库连接参数
             string oraUser = "ezview";
             string oraPass = "ezview";
             string oraIp = "45.4.0.242";
-            string connectionString = "User ID="+ oraUser + ";Password="+ oraPass + ";Data Source=(DESCRIPTION = (ADDRESS_LIST= (ADDRESS = (PROTOCOL = TCP)(HOST = "+ oraIp + ")(PORT = 1521))) (CONNECT_DATA = (SERVICE_NAME = orcl)))";
+            string connectionString = "User ID=" + oraUser + ";Password=" + oraPass + ";Data Source=(DESCRIPTION = (ADDRESS_LIST= (ADDRESS = (PROTOCOL = TCP)(HOST = " + oraIp + ")(PORT = 1521))) (CONNECT_DATA = (SERVICE_NAME = orcl)))";
             using (OracleConnection conn = new OracleConnection(connectionString))
             {
                 conn.Open();
@@ -120,6 +117,7 @@ namespace Kml2Xlsx
                     for (int n = 0; n < SQLStringList.Count; n++)
                     {
                         string strsql = SQLStringList[n].ToString();
+
                         if (strsql.Trim().Length > 1)
                         {
                             cmd.CommandText = strsql;
@@ -135,6 +133,5 @@ namespace Kml2Xlsx
                 }
             }
         }
-
     }
 }
