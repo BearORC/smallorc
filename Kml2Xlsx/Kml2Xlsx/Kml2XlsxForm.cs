@@ -6,6 +6,8 @@ using System.IO;
 using System.Text;
 using System.Windows.Forms;
 using Oracle.ManagedDataAccess.Client;
+using ClassLibraryBear;
+using System.Drawing;
 
 namespace Kml2Xlsx
 {
@@ -61,8 +63,6 @@ namespace Kml2Xlsx
             }
             // dataGridView显示dataSet的数据
             dataGridView1.DataSource = dataSetFileData.Tables["Point"];
-            // 将dataTable数据插入Oracle数据库
-            DoInsert(dataSetFileData.Tables["Point"]);
 
         }
         private static void ReadXml(String xmlFilePath, DataSet ds)
@@ -88,7 +88,7 @@ namespace Kml2Xlsx
             {
                 for (int i = 0; i < dt.Rows.Count; i++)
                 {
-                    SQLStringList.Add("insert into TEMP_QX_JWD (C_JWD, C_NAME, C_DESC) VALUES ('" + dt.Rows[i]["coordinates"] + "','" + dt.Rows[i]["name"] + "','" + dt.Rows[i]["description"] + "')");
+                    SQLStringList.Add("insert into TEMP_QX_JWD (C_JWD, C_NAME, C_DESC, C_XY) VALUES ('" + dt.Rows[i]["coordinates"] + "','" + dt.Rows[i]["name"] + "','" + dt.Rows[i]["description"] + "','" + dt.Rows[i]["XY"] + "')");
                 }
 
             }
@@ -130,6 +130,40 @@ namespace Kml2Xlsx
                 {
                     tx.Rollback();
                     throw new Exception(E.Message);
+                }
+            }
+        }
+
+        private void buttonSaveToOracle_Click(object sender, EventArgs e)
+        {
+            // 将dataTable数据插入Oracle数据库
+            DoInsert(dataSetFileData.Tables["Point"]);
+        }
+
+        private void buttonGpsOffset_Click(object sender, EventArgs e)
+        {
+            DataTable dt = dataSetFileData.Tables["Point"];
+            // 初始化需要新增的列
+            DataColumn newXYColumn = new DataColumn("XY", dt.Columns["coordinates"].DataType);
+            // 新增列
+            dt.Columns.Add(newXYColumn);
+            // 循环生成插入语句
+            if (dt != null)
+            {
+                for (int i = 0; i < dt.Rows.Count; i++)
+                {   
+                    string pt = dt.Rows[i]["coordinates"].ToString();
+
+                    string[] st = pt.Split(',');
+
+                    Point p = GDMapOffset.transform(Convert.ToInt32(Convert.ToDouble(st[0]) * 100000), Convert.ToInt32(Convert.ToDouble(st[1]) * 100000));
+
+                    Debug.Print(dt.Rows[i]["description"].ToString() + ":" + st[0] + "," + st[1] + "|" + p.X + "," + p.Y);
+
+                    // 根据关联关系Placemark_Point，取出父表数据
+                    DataRow parentdr = dataSetFileData.Tables["Point"].Rows[i].GetParentRow("Placemark_Point");
+                    // 两个新增列填值
+                    dt.Rows[i]["XY"] = p.X.ToString() + "," + p.Y.ToString();
                 }
             }
         }

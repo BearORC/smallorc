@@ -30,16 +30,17 @@
         {
             this.buttonBrowse = new System.Windows.Forms.Button();
             this.textBoxKmlFileUrl = new System.Windows.Forms.TextBox();
-            this.buttonExport = new System.Windows.Forms.Button();
             this.dataSetFileData = new System.Data.DataSet();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.buttonSaveToOracle = new System.Windows.Forms.Button();
+            this.buttonGpsOffset = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataSetFileData)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
             // buttonBrowse
             // 
-            this.buttonBrowse.Location = new System.Drawing.Point(555, 12);
+            this.buttonBrowse.Location = new System.Drawing.Point(552, 12);
             this.buttonBrowse.Name = "buttonBrowse";
             this.buttonBrowse.Size = new System.Drawing.Size(75, 21);
             this.buttonBrowse.TabIndex = 0;
@@ -49,19 +50,10 @@
             // 
             // textBoxKmlFileUrl
             // 
-            this.textBoxKmlFileUrl.Location = new System.Drawing.Point(12, 12);
+            this.textBoxKmlFileUrl.Location = new System.Drawing.Point(13, 12);
             this.textBoxKmlFileUrl.Name = "textBoxKmlFileUrl";
-            this.textBoxKmlFileUrl.Size = new System.Drawing.Size(537, 21);
+            this.textBoxKmlFileUrl.Size = new System.Drawing.Size(533, 21);
             this.textBoxKmlFileUrl.TabIndex = 1;
-            // 
-            // buttonExport
-            // 
-            this.buttonExport.Location = new System.Drawing.Point(555, 40);
-            this.buttonExport.Name = "buttonExport";
-            this.buttonExport.Size = new System.Drawing.Size(75, 21);
-            this.buttonExport.TabIndex = 3;
-            this.buttonExport.Text = "导出";
-            this.buttonExport.UseVisualStyleBackColor = true;
             // 
             // dataSetFileData
             // 
@@ -73,16 +65,37 @@
             this.dataGridView1.Location = new System.Drawing.Point(13, 40);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.RowTemplate.Height = 23;
-            this.dataGridView1.Size = new System.Drawing.Size(536, 420);
+            this.dataGridView1.Size = new System.Drawing.Size(776, 420);
             this.dataGridView1.TabIndex = 4;
+            // 
+            // buttonSaveToOracle
+            // 
+            this.buttonSaveToOracle.Location = new System.Drawing.Point(633, 12);
+            this.buttonSaveToOracle.Name = "buttonSaveToOracle";
+            this.buttonSaveToOracle.Size = new System.Drawing.Size(75, 21);
+            this.buttonSaveToOracle.TabIndex = 5;
+            this.buttonSaveToOracle.Text = "存入Oracle";
+            this.buttonSaveToOracle.UseVisualStyleBackColor = true;
+            this.buttonSaveToOracle.Click += new System.EventHandler(this.buttonSaveToOracle_Click);
+            // 
+            // buttonGpsOffset
+            // 
+            this.buttonGpsOffset.Location = new System.Drawing.Point(714, 12);
+            this.buttonGpsOffset.Name = "buttonGpsOffset";
+            this.buttonGpsOffset.Size = new System.Drawing.Size(75, 21);
+            this.buttonGpsOffset.TabIndex = 6;
+            this.buttonGpsOffset.Text = "纠偏";
+            this.buttonGpsOffset.UseVisualStyleBackColor = true;
+            this.buttonGpsOffset.Click += new System.EventHandler(this.buttonGpsOffset_Click);
             // 
             // Kml2XlsxForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(642, 472);
+            this.ClientSize = new System.Drawing.Size(801, 472);
+            this.Controls.Add(this.buttonGpsOffset);
+            this.Controls.Add(this.buttonSaveToOracle);
             this.Controls.Add(this.dataGridView1);
-            this.Controls.Add(this.buttonExport);
             this.Controls.Add(this.textBoxKmlFileUrl);
             this.Controls.Add(this.buttonBrowse);
             this.Name = "Kml2XlsxForm";
@@ -98,9 +111,10 @@
 
         private System.Windows.Forms.Button buttonBrowse;
         private System.Windows.Forms.TextBox textBoxKmlFileUrl;
-        private System.Windows.Forms.Button buttonExport;
         private System.Data.DataSet dataSetFileData;
         private System.Windows.Forms.DataGridView dataGridView1;
+        private System.Windows.Forms.Button buttonSaveToOracle;
+        private System.Windows.Forms.Button buttonGpsOffset;
     }
 }
 
