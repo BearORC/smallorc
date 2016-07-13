@@ -54,9 +54,7 @@ namespace KdSDK2
 
             bool isLogined = false;
             mcuHandle = myAPI.Kdm_CreateMcuSdk();
-            Console.WriteLine("1");
             uint ret = myAPI.Kdm_Init(mcuHandle);
-            Console.WriteLine("2");
             myAPI.Kdm_SetScreenShowLog(mcuHandle, 1);
             byte[] filename;
             filename = stringToBytes("c:\\log", max_id_len);
@@ -75,8 +73,8 @@ namespace KdSDK2
             // 切换码流的浏览方式
             myAPI.Kdm_SetStreamPattern(mcuHandle, 0, ref errorCode);
 
-            string strIP = "45.4.8.9";
-            string strUserName = "sdktest@nnzw";
+            string strIP = "45.4.8.10";
+            string strUserName = "admin@nnpa";
             string strPassWord = "kedacom888888";
             byte[] byteIP = stringToBytes(strIP, 257);
             byte[] byteUserName = stringToBytes(strUserName, 257);
@@ -173,22 +171,21 @@ namespace KdSDK2
                 {
                     tSubsDEV.m_vctDevID[i].szID = new byte[max_id_len];
                 }
-                int l = 0;
+
+                int y = 0;
                 for (int j = 0; j < allDeviceList.Count; j++)
                 {
-
-                    Array.Copy(allDeviceList[j].deviceID.szID, 0, tSubsDEV.m_vctDevID[l].szID, 0, max_id_len);
-                    myAPI.Kdm_SubscriptDeviceStatus(mcuHandle, tSubsDEV, emDevSubType, ref errorInfo);
-                    //if (l < 20)
-                    //{
-                    //    Array.Copy(allDeviceList[j].deviceID.szID, 0, tSubsDEV.m_vctDevID[l].szID, 0, max_id_len);
-                    //    l = l + 1;
-                    //}
-                    //if (l == 20||j == allDeviceList.Count-1)
-                    //{
-                    //    myAPI.Kdm_SubscriptDeviceStatus(mcuHandle, tSubsDEV, emDevSubType, ref errorInfo);
-                    //    l = 0;
-                    //}
+                    if (y < 20)
+                    {
+                        Array.Copy(allDeviceList[j].deviceID.szID, 0, tSubsDEV.m_vctDevID[y].szID, 0, max_id_len);
+                    }
+                    y++;
+                    if (y == 20 || j == allDeviceList.Count - 1)
+                    {
+                        tSubsDEV.m_bySubsDevNum = (Byte)y;
+                        myAPI.Kdm_SubscriptDeviceStatus(mcuHandle, tSubsDEV, emDevSubType, ref errorInfo);
+                        y = 0;
+                    }
                 }
 
                 System.Threading.Thread.Sleep(10000);
