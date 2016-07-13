@@ -478,7 +478,7 @@ public struct SPARAM
 //Frame Header Structure
 public struct PFRAMEHDR1
 {
-    public byte m_byMediaType; // media type ( eRecvStreamType )
+    public byte m_byMediaType; // media type ( eRecvStreamType )GBID
     //public UInt32 m_pData;       // stream data
     [MarshalAs(UnmanagedType.LPStr)]
     public string m_pData;
@@ -549,6 +549,7 @@ public struct URLLIST
     [MarshalAs(UnmanagedType.ByValArray, SizeConst = 20)]
     public URLINFO[] m_aStreamUrl; // stream url info
 }
+
 
 public enum TRecStat
 {
@@ -795,6 +796,9 @@ namespace CsharpSDK
         public extern static uint Kdm_SetSaveLogFile(IntPtr mcuHandle, uint mSaveFlag, byte[] filename);
         [DllImport(@"mcusdk.dll")]
         public extern static uint Kdm_SetScreenShowLog(IntPtr mcuHandle, uint dwShowLogLev);
+        // 获取设备的国标ID
+        [DllImport(@"mcusdk.dll")]
+        public extern static uint Kdm_GetDeviceGBID(IntPtr mcuHandle, DEVCHN tDevChn,ref DEVCHN tDevGb, ref uint errorCode);
 
         [DllImport(@"mcusdk.dll", CharSet = CharSet.Auto)]
         //获取设备的GPS信息

@@ -1,6 +1,7 @@
 ﻿using CsharpSDK;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -43,30 +44,35 @@ namespace KdSDK2
         public static DateTime m_endTime;
         public static uint mCurrentRecordTask = 0;
 
+
+        static List<String> onlineList = new List<String>();
+
         static void Main(string[] args)
         {
-
+            
             uint errorInfo = 0;
 
             bool isLogined = false;
-
             mcuHandle = myAPI.Kdm_CreateMcuSdk();
+            Console.WriteLine("1");
             uint ret = myAPI.Kdm_Init(mcuHandle);
+            Console.WriteLine("2");
             myAPI.Kdm_SetScreenShowLog(mcuHandle, 1);
             byte[] filename;
             filename = stringToBytes("c:\\log", max_id_len);
             myAPI.Kdm_SetSaveLogFile(mcuHandle, 1, filename);
+
             cbFun = new myAPI.cbFreshDevStatusD(cbFreshDevStatus);
             cbEventInfo = new myAPI.cbSDKEventCallbackD(cbSDKEventCallback);
             myAPI.Kdm_SetSDKEventCallback(mcuHandle, cbEventInfo, 0);
             DateTime myNow = DateTime.Now;
             m_startTime = new DateTime(myNow.Year, myNow.Month, myNow.Day, 0, 0, 0, 0);
             m_endTime = m_startTime.AddDays(1);
-
             //startTime.Text = m_startTime.Date.ToString();
             //endTime.Text = m_endTime.Date.ToString();
             //cb_platform.Checked = true;
             uint errorCode = 0;
+            // 切换码流的浏览方式
             myAPI.Kdm_SetStreamPattern(mcuHandle, 0, ref errorCode);
 
             string strIP = "45.4.8.9";
@@ -75,6 +81,8 @@ namespace KdSDK2
             byte[] byteIP = stringToBytes(strIP, 257);
             byte[] byteUserName = stringToBytes(strUserName, 257);
             byte[] bytePassWord = stringToBytes(strPassWord, 257);
+
+            // 初始化登录平台
             EBussinessMod type = myAPI.Kdm_PlatTypeDetect(mcuHandle, byteIP, ref errorInfo);
             myAPI.Kdm_ModualSelect(mcuHandle, type, EStreamMod.emG900, EDecoderMod.emBaseDec);
             ret = myAPI.Kdm_Login(mcuHandle, byteUserName, bytePassWord, byteIP, "windows", ref errorInfo);
@@ -90,6 +98,8 @@ namespace KdSDK2
                 myAPI.Kdm_SetDevStatusCallback(mcuHandle, cbFun, 0);
                 Console.WriteLine("登录成功");
 
+
+                // 获取分组
                 string temp = "";
                 IDs root = new IDs();
                 root.szID = stringToBytes(temp, max_id_len);
@@ -116,13 +126,14 @@ namespace KdSDK2
 
                 //new Thread(sub_thrd_fun).Start();
 
+
+                // 获取设备
                 for (int i = 0; i < idsList.Count; i++)
                 {
-                    Console.WriteLine(i + "/" + idsList.Count);
+                    Console.WriteLine(i+1 + "/" + idsList.Count);
                     uint utID = myAPI.Kdm_GetDeviceByGroup(mcuHandle, idsList[i], ref errorInfo);
                     string deviceName = bytesToString(idsList[i].szID);
                     uint uRet = 1;
-                    Console.WriteLine("deviceName:"+deviceName);
                     while (uRet != 0)
                     {
                         DeviceInfo deviceInfo = new DeviceInfo();
@@ -152,45 +163,38 @@ namespace KdSDK2
                         }
                     }
                 }
-
-                Console.ReadKey();
-                ESubscriptInfo emDevSubType = (ESubscriptInfo.emOnline | ESubscriptInfo.emVidChn | ESubscriptInfo.emGPSInfo | ESubscriptInfo.emRecStatus);
+                
+                // 获取状态
+                ESubscriptInfo emDevSubType = (ESubscriptInfo.emOnline | ESubscriptInfo.emVidChn);
                 TSUBSDEVS tSubsDEV = new TSUBSDEVS();
                 tSubsDEV.m_bySubsDevNum = 1;
                 tSubsDEV.m_vctDevID = new IDs[20];
-                for (int x = 0; x < 20; x++)
+                for (int i = 0; i < 20; i++)
                 {
-                    tSubsDEV.m_vctDevID[x].szID = new byte[max_id_len];
+                    tSubsDEV.m_vctDevID[i].szID = new byte[max_id_len];
                 }
+                int l = 0;
                 for (int j = 0; j < allDeviceList.Count; j++)
                 {
-                    Array.Copy(allDeviceList[j].deviceID.szID, 0, tSubsDEV.m_vctDevID[0].szID, 0, max_id_len);
-                    myAPI.Kdm_SubscriptDeviceStatus(mcuHandle, tSubsDEV, emDevSubType, ref errorInfo);
-                    DEVSRC_ST _DEVSRC_ST = new DEVSRC_ST();
-                    _DEVSRC_ST.bEnable = new bool();
-                    _DEVSRC_ST.bOnline = new bool();
-
-                    DEVCHN tDevSrc = new DEVCHN();
-                    tDevSrc.deviceID.szID = allDeviceList[j].deviceID.szID;
-                    tDevSrc.domainID.szID = allDeviceList[j].domainID.szID;
-                    //tDevSrc.nSrc = allDeviceList[j].nDevSrcNum;
-                    //tDevSrc.nChn = allDeviceList[j].nEncoderChnNum;
-
-                    tDevSrc.nSrc = 0;
-                    tDevSrc.nChn = 0;
-
-                    Console.WriteLine("deviceID:" + bytesToString(allDeviceList[j].deviceID.szID));
-                    Console.WriteLine("domainID:" + bytesToString(allDeviceList[j].domainID.szID));
-                    Console.WriteLine("nDevSrcNum:" + allDeviceList[j].nDevSrcNum);
-                    Console.WriteLine("nEncoderChnNum:" + allDeviceList[j].nEncoderChnNum);
-
-                    uint r = myAPI.Kdm_GetDevSrcStatus(mcuHandle, tDevSrc, ref _DEVSRC_ST, ref errorInfo);
-                    Console.WriteLine("deviceName:" + bytesToString(allDeviceList[j].szDevSrcAlias));
-                    Console.WriteLine("bOnline:" + _DEVSRC_ST.bOnline);
-                    Console.WriteLine("bEnable:" + _DEVSRC_ST.bEnable);
-                    Console.WriteLine("ret:" + r);
+                    if (l < 20)
+                    {
+                        Array.Copy(allDeviceList[j].deviceID.szID, 0, tSubsDEV.m_vctDevID[l].szID, 0, max_id_len);
+                        l = l + 1;
+                    }
+                    if (l == 20||j == allDeviceList.Count-1)
+                    {
+                        myAPI.Kdm_SubscriptDeviceStatus(mcuHandle, tSubsDEV, emDevSubType, ref errorInfo);
+                        l = 0;
+                    }
                 }
+
+                System.Threading.Thread.Sleep(10000);
+                Console.Write("按任意键继续...");
                 Console.ReadKey();
+
+
+
+                // 生成在线列表
                 for (int j = 0; j < allDeviceList.Count; j++)
                 {
                     DEVSRC_ST _DEVSRC_ST = new DEVSRC_ST();
@@ -203,12 +207,57 @@ namespace KdSDK2
                     tDevSrc.nSrc = 0;
                     tDevSrc.nChn = 0;
 
-                    uint r = myAPI.Kdm_GetDevSrcStatus(mcuHandle, tDevSrc, ref _DEVSRC_ST, ref errorInfo);
-                    Console.Write("deviceName:" + bytesToString(allDeviceList[j].szDevSrcAlias));
-                    Console.WriteLine("bOnline:" + _DEVSRC_ST.bOnline);
+                    DEVCHN tDevDst = new DEVCHN();
+                    tDevDst.deviceID.szID = allDeviceList[j].deviceID.szID;
+                    tDevDst.domainID.szID = allDeviceList[j].domainID.szID;
+                    tDevDst.nSrc = 0;
+                    tDevDst.nChn = 0;
+                    
+                    uint r1 = myAPI.Kdm_GetDevSrcStatus(mcuHandle, tDevSrc, ref _DEVSRC_ST, ref errorInfo);
+                    uint r2 = myAPI.Kdm_GetDeviceGBID(mcuHandle, tDevSrc, ref tDevDst, ref errorInfo);
+                    if (_DEVSRC_ST.bOnline)
+                    {
+                        onlineList.Add(bytesToString(tDevDst.deviceID.szID).Substring(0, 20));
+                        //Console.WriteLine("gbId:" + bytesToString(tDevDst.deviceID.szID).Substring(0, 20));
+                    }
                 }
-                Console.ReadKey();
+
+                // 生成xml文件
+
+                if (File.Exists("online.xml"))
+                {
+                    File.Delete("online.xml");
+                }
+
+                for (int i = 0; i < onlineList.Count; i++)
+                {
+                    if (i == 0)
+                    {
+                        File.AppendAllText("online.xml", "<?xml version=\"1.0\" encoding=\"GBK\" standalone = \"no\" ?>\n", Encoding.GetEncoding("GBK"));
+                        File.AppendAllText("online.xml", "<XmlRoot>\n", Encoding.GetEncoding("GBK"));
+                        File.AppendAllText("online.xml", "<UserInfo>\n", Encoding.GetEncoding("GBK"));
+                        File.AppendAllText("online.xml", "<UserName>admin</UserName>\n", Encoding.GetEncoding("GBK"));
+                        File.AppendAllText("online.xml", "</UserInfo>\n", Encoding.GetEncoding("GBK"));
+                        File.AppendAllText("online.xml", "<Switch>\n", Encoding.GetEncoding("GBK"));
+                        File.AppendAllText("online.xml", "<!--0 无限制， 1 仅限主流， 2 仅限辅流-->\n", Encoding.GetEncoding("GBK"));
+                        File.AppendAllText("online.xml", "<PriSec>1</PriSec>\n", Encoding.GetEncoding("GBK"));
+                        File.AppendAllText("online.xml", "<!--0 无限制， 1 正选， 2 反选-->\n", Encoding.GetEncoding("GBK"));
+                        File.AppendAllText("online.xml", "<IdLimit>1</IdLimit>\n", Encoding.GetEncoding("GBK"));
+                        File.AppendAllText("online.xml", "</Switch>\n", Encoding.GetEncoding("GBK"));
+                        File.AppendAllText("online.xml", "<!--国标限制，把有限制的设备国标ID列在此处，EntryNum为ID的总个数 -->\n", Encoding.GetEncoding("GBK"));
+                        File.AppendAllText("online.xml", "<!---如<EntryNum>2</EntryNum><Entry0>31010000001120000086</Entry0><Entry1>31010000001120000090</Entry1>-->\n", Encoding.GetEncoding("GBK"));
+                        File.AppendAllText("online.xml", "<GbId>\n", Encoding.GetEncoding("GBK"));
+                        File.AppendAllText("online.xml", "<EntryNum>" + onlineList.Count + "</EntryNum>\n", Encoding.GetEncoding("GBK"));
+
+                    }
+                    File.AppendAllText("online.xml", "<Entry" + i + ">" + onlineList[i] + "</Entry" + i + ">\n", Encoding.GetEncoding("GBK"));
+                }
+                File.AppendAllText("online.xml", "</GbId>\n", Encoding.GetEncoding("GBK"));
+                File.AppendAllText("online.xml", "</XmlRoot>\n", Encoding.GetEncoding("GBK"));
             }
+
+            Console.Write("按任意键关闭...");
+            Console.ReadKey();
         }
         private static byte[] stringToBytes(string str, uint size)
         {
