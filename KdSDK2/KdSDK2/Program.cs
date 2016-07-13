@@ -176,16 +176,19 @@ namespace KdSDK2
                 int l = 0;
                 for (int j = 0; j < allDeviceList.Count; j++)
                 {
-                    if (l < 20)
-                    {
-                        Array.Copy(allDeviceList[j].deviceID.szID, 0, tSubsDEV.m_vctDevID[l].szID, 0, max_id_len);
-                        l = l + 1;
-                    }
-                    if (l == 20||j == allDeviceList.Count-1)
-                    {
-                        myAPI.Kdm_SubscriptDeviceStatus(mcuHandle, tSubsDEV, emDevSubType, ref errorInfo);
-                        l = 0;
-                    }
+
+                    Array.Copy(allDeviceList[j].deviceID.szID, 0, tSubsDEV.m_vctDevID[l].szID, 0, max_id_len);
+                    myAPI.Kdm_SubscriptDeviceStatus(mcuHandle, tSubsDEV, emDevSubType, ref errorInfo);
+                    //if (l < 20)
+                    //{
+                    //    Array.Copy(allDeviceList[j].deviceID.szID, 0, tSubsDEV.m_vctDevID[l].szID, 0, max_id_len);
+                    //    l = l + 1;
+                    //}
+                    //if (l == 20||j == allDeviceList.Count-1)
+                    //{
+                    //    myAPI.Kdm_SubscriptDeviceStatus(mcuHandle, tSubsDEV, emDevSubType, ref errorInfo);
+                    //    l = 0;
+                    //}
                 }
 
                 System.Threading.Thread.Sleep(10000);
