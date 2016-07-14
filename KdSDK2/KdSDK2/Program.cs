@@ -122,8 +122,7 @@ namespace KdSDK2
                     _uRtn = myAPI.Kdm_GetGroupNext(mcuHandle, utaskID, ref groupInfo, ref errorInfo);
 
                 }
-
-                //new Thread(sub_thrd_fun).Start();
+                
 
 
                 // 获取设备
