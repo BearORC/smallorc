@@ -46,6 +46,7 @@ namespace KdSDK2
 
 
         static List<String> onlineList = new List<String>();
+        static List<String> allList = new List<String>();
 
         static void Main(string[] args)
         {
@@ -212,7 +213,7 @@ namespace KdSDK2
                     tDevDst.domainID.szID = allDeviceList[j].domainID.szID;
                     tDevDst.nSrc = 0;
                     tDevDst.nChn = 0;
-                    
+
                     uint r1 = myAPI.Kdm_GetDevSrcStatus(mcuHandle, tDevSrc, ref _DEVSRC_ST, ref errorInfo);
                     uint r2 = myAPI.Kdm_GetDeviceGBID(mcuHandle, tDevSrc, ref tDevDst, ref errorInfo);
                     if (_DEVSRC_ST.bOnline)
@@ -220,9 +221,11 @@ namespace KdSDK2
                         onlineList.Add(bytesToString(tDevDst.deviceID.szID).Substring(0, 20));
                         //Console.WriteLine("gbId:" + bytesToString(tDevDst.deviceID.szID).Substring(0, 20));
                     }
+                    // 生成全量设备列表
+                    allList.Add(bytesToString(tDevDst.deviceID.szID).Substring(0, 20));
                 }
 
-                // 生成xml文件
+                // 生成在线xml文件
 
                 if (File.Exists("online.xml"))
                 {
@@ -254,6 +257,42 @@ namespace KdSDK2
                 }
                 File.AppendAllText("online.xml", "</GbId>\n", Encoding.GetEncoding("GBK"));
                 File.AppendAllText("online.xml", "</XmlRoot>\n", Encoding.GetEncoding("GBK"));
+
+
+                // 生成所有设备xml文件
+
+                if (File.Exists("all.xml"))
+                {
+                    File.Delete("all.xml");
+                }
+
+                for (int i = 0; i < allList.Count; i++)
+                {
+                    if (i == 0)
+                    {
+                        File.AppendAllText("all.xml", "<?xml version=\"1.0\" encoding=\"GBK\" standalone = \"no\" ?>\n", Encoding.GetEncoding("GBK"));
+                        File.AppendAllText("all.xml", "<XmlRoot>\n", Encoding.GetEncoding("GBK"));
+                        File.AppendAllText("all.xml", "<UserInfo>\n", Encoding.GetEncoding("GBK"));
+                        File.AppendAllText("all.xml", "<UserName>admin</UserName>\n", Encoding.GetEncoding("GBK"));
+                        File.AppendAllText("all.xml", "</UserInfo>\n", Encoding.GetEncoding("GBK"));
+                        File.AppendAllText("all.xml", "<Switch>\n", Encoding.GetEncoding("GBK"));
+                        File.AppendAllText("all.xml", "<!--0 无限制， 1 仅限主流， 2 仅限辅流-->\n", Encoding.GetEncoding("GBK"));
+                        File.AppendAllText("all.xml", "<PriSec>1</PriSec>\n", Encoding.GetEncoding("GBK"));
+                        File.AppendAllText("all.xml", "<!--0 无限制， 1 正选， 2 反选-->\n", Encoding.GetEncoding("GBK"));
+                        File.AppendAllText("all.xml", "<IdLimit>1</IdLimit>\n", Encoding.GetEncoding("GBK"));
+                        File.AppendAllText("all.xml", "</Switch>\n", Encoding.GetEncoding("GBK"));
+                        File.AppendAllText("all.xml", "<!--国标限制，把有限制的设备国标ID列在此处，EntryNum为ID的总个数 -->\n", Encoding.GetEncoding("GBK"));
+                        File.AppendAllText("all.xml", "<!---如<EntryNum>2</EntryNum><Entry0>31010000001120000086</Entry0><Entry1>31010000001120000090</Entry1>-->\n", Encoding.GetEncoding("GBK"));
+                        File.AppendAllText("all.xml", "<GbId>\n", Encoding.GetEncoding("GBK"));
+                        File.AppendAllText("all.xml", "<EntryNum>" + allList.Count + "</EntryNum>\n", Encoding.GetEncoding("GBK"));
+
+                    }
+                    File.AppendAllText("all.xml", "<Entry" + i + ">" + allList[i] + "</Entry" + i + ">\n", Encoding.GetEncoding("GBK"));
+                }
+                File.AppendAllText("all.xml", "</GbId>\n", Encoding.GetEncoding("GBK"));
+                File.AppendAllText("all.xml", "</XmlRoot>\n", Encoding.GetEncoding("GBK"));
+
+
             }
 
             Console.Write("按任意键关闭...");
